@@ -4,31 +4,53 @@ var CARD_CONTAINER = document.getElementsByClassName('card-container')[0];
 
  function Adicionar() {
  	var Pedido = {
- 		nome: "mesa 2",
- 		inform: "McLanche",
+ 		nome: document.getElementById("txtNome").value,
+ 		inform: document.getElementById("txtInfo").value,
 
 
   	};
+
   	ref.push(Pedido).then(snapshot=>{
-  		adicionarCardATela(Pedido, snapshot.Key)
-  		console.log(Pedido)
+  		alert('pedido adicionado')
+      
   	})
+
  }
+
+
+
+
 function deletar (id) {
-		ref.child(id).remove().then(()=>{
-			var ped = document.getElementById(id)
-			ped.remove()
-		})
+  console.log(id)
+
+    
+     ref.child(id).remove().then(()=>{
+     var pedi = document.getElementById(id)
+    pedi.remove() 
+    })
+  
+    
 	}
- document.addEventListener("DOMContentLoaded", function(){
-  ref.once('value').then(snapshot=>{
-    console.log("chave: ", snapshot.key)
-    snapshot.forEach(value =>{
-      console.log('chave. ', value.key)
-      adicionarCardATela(value.val(), value.key);
-    });
-  });
+
+
+document.addEventListener("DOMContentLoaded", function(){
+
+ref.on('value',snapshot =>{
+  snapshot.forEach(value =>{
+    var container = document.getElementsByClassName('card-container')
+    adicionarCardATela(value.val(),value.key)
+  })
+})
+ 
 });
+
+
+
+
+function Pronto (id) {
+	console.log(id)
+}
+
 
  function adicionarCardATela(informacao, snapKey) {
   
@@ -60,11 +82,12 @@ function deletar (id) {
   inner2.classList.add('row');
 
 
-	let button_del2= document.createElement("button");
-  button_del2.classList.add('btn', 'btn-link', 'col-3');
-  button_del2.setAttribute('onclick', 'deletar("' + snapKey + '")');
-  button_del2.innerText = 'A'; 
-  inner2.appendChild(button_del2);
+	let button_pronto= document.createElement("button");
+  button_pronto.classList.add('btn', 'btn-link', 'col-3');
+  button_pronto.setAttribute('onclick', 'Pronto("' + snapKey + '")');
+  button_pronto.innerText = 'Pronto'; 
+  inner2.appendChild(button_pronto);
+  
 //--------------------------------------------------------------------------
 	let ped = document.createElement("div");
   ped.classList.add('ped');
